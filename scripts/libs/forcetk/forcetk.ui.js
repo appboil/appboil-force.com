@@ -1,10 +1,20 @@
-/**
- * Created by Piotr Walczyszyn (outof.me | @pwalczyszyn)
- *
- * User: pwalczys
- * Date: 8/7/12
- * Time: 4:07 PM
- */
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//	Copyright 2012 Piotr Walczyszyn (http://outof.me | @pwalczyszyn)
+//
+//	Licensed under the Apache License, Version 2.0 (the "License");
+//	you may not use this file except in compliance with the License.
+//	You may obtain a copy of the License at
+//
+//		http://www.apache.org/licenses/LICENSE-2.0
+//
+//	Unless required by applicable law or agreed to in writing, software
+//	distributed under the License is distributed on an "AS IS" BASIS,
+//	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//	See the License for the specific language governing permissions and
+//	limitations under the License.
+//
+//////////////////////////////////////////////////////////////////////////////////////
 
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -64,7 +74,7 @@
 
             if (refreshToken) {
                 var that = this;
-                this.client.setRefreshToken(encodeURIComponent(refreshToken));
+                this.client.setRefreshToken(refreshToken);
                 this.client.refreshAccessToken(
                     function refreshAccessToken_successHandler(sessionToken) {
 
@@ -84,6 +94,45 @@
                 this._authenticate();
             }
 
+        },
+
+        logout:function logout(logoutCallback) {
+            var that = this,
+
+                refreshToken = encodeURIComponent(this.client.refreshToken),
+
+                doSecurLogout = function () {
+                    $.ajax({
+                        type:'GET',
+                        async:that.client.asyncAjax,
+                        url:that.client.instanceUrl + '/secur/logout.jsp',
+                        cache:false,
+                        processData:false,
+                        success:function (data, textStatus, jqXHR) {
+                            if (logoutCallback) logoutCallback.call();
+                        },
+                        error:function (jqXHR, textStatus, errorThrown) {
+                            console.log('logout error');
+                            if (logoutCallback) logoutCallback.call();
+                        }
+                    });
+                }
+
+            localStorage.setItem('ftkui_refresh_token', null);
+
+            $.ajax({
+                type:'POST',
+                url:that.client.instanceUrl + '/services/oauth2/revoke',
+                cache:false,
+                processData:false,
+                data:'token=' + refreshToken,
+                success:function (data, textStatus, jqXHR) {
+                    doSecurLogout();
+                },
+                error:function (jqXHR, textStatus, errorThrown) {
+                    doSecurLogout();
+                }
+            });
         },
 
         _authenticate:function _authenticate() {
@@ -121,15 +170,16 @@
 
             } else if (window.plugins && window.plugins.childBrowser) { // This is PhoneGap/Cordova app
 
-
                 var childBrowser = window.plugins.childBrowser;
                 childBrowser.onLocationChange = function (loc) {
                     if (loc.indexOf(that.callbackURL) == 0) {
                         childBrowser.close();
-                        that._sessionCallback(decodeURIComponent(loc));
+                        loc = decodeURI(loc).replace('%23', '#');
+                        that._sessionCallback(loc);
                     }
                 };
-                childBrowser.showWebPage(this._getAuthorizeUrl());
+
+                childBrowser.showWebPage(this._getAuthorizeUrl(), {showLocationBar:true, locationBarAlign:'bottom'});
 
             } else {
                 throw new Error('Didn\'t find way to authenticate!');
@@ -137,12 +187,12 @@
         },
 
         _getAuthorizeUrl:function _getAuthorizeUrl() {
-            return this.loginURL + 'services/oauth2/authorize?display=touch'
+            return this.loginURL + 'services/oauth2/authorize?'
                 + '&response_type=token&client_id=' + encodeURIComponent(this.consumerKey)
                 + '&redirect_uri=' + encodeURIComponent(this.callbackURL);
         },
 
-        _sessionCallback:function sessionCallback(loc) {
+        _sessionCallback:function _sessionCallback(loc) {
             var oauthResponse = {},
                 fragment = loc.split("#")[1];
 
@@ -164,6 +214,8 @@
             } else {
 
                 localStorage.setItem('ftkui_refresh_token', oauthResponse.refresh_token);
+
+                this.client.setRefreshToken(oauthResponse.refresh_token);
                 this.client.setSessionToken(oauthResponse.access_token, null, oauthResponse.instance_url);
 
                 if (this.successCallback)
@@ -173,7 +225,9 @@
 
             }
         }
-    };
+    }
+    ;
 
     return forcetk;
-}));
+}))
+;
