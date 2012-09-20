@@ -1,9 +1,5 @@
 /**
  * Created by Piotr Walczyszyn (outof.me | @pwalczyszyn)
- *
- * User: pwalczys
- * Date: 7/4/12
- * Time: 7:52 PM
  */
 
 require.config({
@@ -65,7 +61,7 @@ require(['domReady', 'views/MainView', 'jqm', 'overthrow'],
             function onDeviceReady(desktop) {
                 // Hiding splash screen when app is loaded
                 if (desktop !== true)
-                    cordova.exec(null, null, "SplashScreen", "hide", []);
+                    cordova.exec(null, null, 'SplashScreen', 'hide', []);
 
                 // Pushing MainView
                 $.mobile.jqmNavigator.pushView(new MainView());
@@ -73,7 +69,7 @@ require(['domReady', 'views/MainView', 'jqm', 'overthrow'],
 
             if (navigator.userAgent.match(/(iPad|iPhone|Android)/)) {
                 // This is running on a device so waiting for deviceready event
-                document.addEventListener("deviceready", onDeviceReady, false);
+                document.addEventListener('deviceready', onDeviceReady, false);
             } else {
                 // Polyfill for navigator.notification features to work in browser when debugging
                 navigator.notification = {alert:function (message) {
