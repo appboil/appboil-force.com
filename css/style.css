@@ -1,14 +1,27 @@
+body {
+    margin: 0;
+}
+
+#container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
 div[data-role="header"] {
     position: absolute;
     top: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
 }
 
 div[data-role="content"] {
     position: absolute;
     top: 41px;
     bottom: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
 }
 
 .scrollable {
