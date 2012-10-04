@@ -13,9 +13,9 @@ require.config({
         // Backbone.js library
         Backbone:'libs/backbone/backbone',
         // jQuery
-        jquery:'libs/jquery/jquery-1.7.1',
+        jquery:'libs/jquery/jquery-1.8.2',
         // jQuery Mobile framework
-        jqm:'libs/jquery.mobile/jquery.mobile-1.1.1',
+        jqm:'libs/jquery.mobile/jquery.mobile-1.2.0',
         // jQuery Mobile plugin for Backbone views navigation
         jqmNavigator:'libs/jquery.mobile/jqmNavigator',
         // Salesforce REST API library
