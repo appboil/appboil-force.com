@@ -9,6 +9,16 @@
     <!-- jQuery Mobile styles -->
     <link rel="stylesheet" href="scripts/libs/jquery.mobile/jquery.mobile-1.2.0.css"/>
 
+    <!-- Custom styles -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="all"/>
+
+    <!-- Fix for scrolling on iOS prior to iOS 6 -->
+    <style type="text/css">
+        .scrollable > * {
+            -webkit-transform: translateZ(0px);
+        }
+    </style>
+
     <!-- Referencing iOS specific PhoneGap JS -->
     <script type="text/javascript" charset="utf-8" src="scripts/libs/cordova/cordova-ios-2.1.0.js"></script>
     <script type="text/javascript" charset="utf-8" src="scripts/libs/cordova/ChildBrowser-ios.js"></script>
@@ -17,5 +27,6 @@
 
 </head>
 <body>
+<div id="container"/>
 </body>
 </html>

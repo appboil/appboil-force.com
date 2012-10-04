@@ -1,4 +1,4 @@
-<div data-role="header" data-position="fixed">
+<div data-role="header">
     <h1>MainView</h1>
 </div>
 

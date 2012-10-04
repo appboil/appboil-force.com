@@ -1,0 +1,17 @@
+div[data-role="header"] {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+div[data-role="content"] {
+    position: absolute;
+    top: 41px;
+    bottom: 0;
+    width: 100%;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
