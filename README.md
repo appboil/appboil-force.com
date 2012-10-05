@@ -1,4 +1,4 @@
-### Boilerplate PhoneGap/Cordova App preconfigured for Force.com integration
+### Boilerplate PhoneGap/Cordova App preconfigured for Salesforce.com integration
 
 Following libs are used:
 - [RequireJS](http://requirejs.org/) for app modularization
